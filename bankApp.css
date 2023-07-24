@@ -1,0 +1,115 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+.main{
+  display: flex;
+  flex-direction: column;
+}
+.bankingApp {
+  display: flex;
+  margin-top: 20px;
+  
+  background-color: purple;
+  width: 100%;
+}
+
+.bankingApp a {
+  text-decoration: none;
+  color: black;
+}
+
+.bank_img img {
+  
+  width: 100px;
+  height: 100px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.common{
+  
+  border-style: solid;
+  padding-right: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+  padding: 2px;
+  height: 40px;
+  margin-top: 21px;
+  cursor: pointer;
+}
+
+.common p{
+  margin: 0;
+  padding-top: 8px;
+}
+
+.common:hover {
+  border-color: red;
+}
+
+.lower_body{
+  display: flex;
+  margin-top: 20px;
+ 
+}
+
+.profile_header{
+  margin-bottom: 15px;
+  border-bottom: 2px solid black;
+  padding: 0;
+  padding-left: 8px;
+}
+
+.acctProfile{
+  
+  border-style: solid;
+  margin-left: 20px;
+  margin-right: 25px;
+  width:46%;
+  border-radius: 10px;
+ 
+
+}
+
+.acctProfile label{
+  display:block;
+ 
+  padding-bottom: 2px;
+  padding-left: 6px;
+  margin-bottom: 8px;
+}
+
+.recent{
+  display: flex;
+  flex-direction: column;
+  border-style: solid;
+  width:46%;
+  border-radius: 10px;
+ 
+}
+
+.activity_header{
+  display: block;
+  margin-bottom: 15px;
+  border-bottom: 2px solid black;
+  padding: 0;
+  padding-left: 8px;
+}
+
+.desc_content{
+  display:flex;
+}
+
+.description{
+  width: 46%;
+  padding-left: 6px;
+}
+
+.amount{
+  width: 46%;
+  text-align: right;
+}
