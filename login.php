@@ -1,47 +1,85 @@
 <?php
-session_start();
-
-$users = array(
-  'user1' => password_hash('password1', PASSWORD_DEFAULT),
-  'user2' => password_hash('password2', PASSWORD_DEFAULT),
-  'user3' => password_hash('password3', PASSWORD_DEFAULT),
-  // add more users as needed
-);
-
-if (isset($_POST['username']) && isset($_POST['password'])) {
-  $username = $_POST['username'];
-  $password = $_POST['password'];
-
-  if (isset($users[$username]) && password_verify($password, $users[$username])) {
-    $_SESSION['username'] = $username;
-    $_SESSION['message'] = "You are now logged in as $username";
-    header('Location: bankApp.php'); // replace with your file name
-  } else {
-    $_SESSION['message'] = "Invalid username or password.";
-    header('Location: login.php');
-  }
-  exit();
-}
+     session_start();
 ?>
-
 <!DOCTYPE html>
 <html>
-<head>
-  <link rel="stylesheet" type="text/css" href="bankApp.css">
-</head>
-<body>
-  <?php
-  if (isset($_SESSION['message'])) {
-    echo "<div id='message'>" . $_SESSION['message'] . "</div>";
-    unset($_SESSION['message']);
-  }
-  ?>
-  <form method="post" action="login.php">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br>
-    <input type="submit" value="Login">
-  </form>
-</body>
+     <head>
+          <title>Login - Jeopardy</title>
+          <meta charset="UTF-8">
+          <link rel="stylesheet" href="login_style.css">
+     </head>
+     <body>
+          <?php
+               // Error Messages
+               $username= $usernameErr = "";
+               $password= $passwordErr= "";
+               $usr_n_passErr = "";
+                $login_err ="";
+              
+
+               if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if (empty($_POST["username"])) {
+                         $usernameErr = "Name is required";
+                    } 
+                    if (!preg_match("/^[A-Za-z_]\w*$/",$_POST['username'])) {
+                         $usernameErr = "*Only letters,numbers and underscore are allowed. Can not start with a number.";
+                    } else {
+                         $username = $_POST["username"];
+                         $_SESSION["username"] = $username;
+                    }
+
+                    if (empty($_POST["password"])) {
+                         $password = "password is required";
+                    } 
+
+                    if (!preg_match("/^[A-Za-z_0-9$][A-Za-z0-9_#*$]*$/",$_POST['password'])) {
+                         $passwordErr = "*wrong password pattern.";
+                    } else {
+                         $password = $_POST["password"];
+                         $_SESSION["password"] = $password;
+                    }
+
+                    if (empty($usernameErr) && empty($passwordErr)) {
+                         header("Location: login-db-processor.php");
+                         exit;
+                    } else {
+                         $usr_n_passErr= "*Incorrect username or password";
+                    }
+
+                   
+               }	 
+               if(!empty($_SESSION["error"])){
+                $login_err = $_SESSION["error"];
+                unset($_SESSION["error"]); // remove the error
+              }
+          ?>
+          <div class="pic_header"> <img src="gsu.jpg"> </div>
+          <h1 class= "login_header"> Login </h1>
+          <form  method="post" action= " <?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> ">
+               <div class="login_fields">
+                    <div class="usr_n_span">
+                         <label class="label" for="u_name"> Username 
+                              <input class="input" type="text" id="u_name" name="username" required> 
+                         </label> 
+                         <span class= "error">  <?php echo $usernameErr; ?> </span> <br>
+                    </div>
+
+                    <div class="pass_n_span">
+                         <label class="label" for="pass"> Password 
+                              <input class="input" type="password" id="pass" name="password"  required >
+                         </label> 
+                         <span class= "error">  <?php echo $passwordErr; ?> </span> <br>
+                    </div>
+
+                    <div class= "submit_align">
+                         <input type= "submit"><br>
+                    </div>
+
+                    <div class="mistake"> 
+                         <span> <?php echo $usr_n_passErr; ?> </span> <br>
+                         <span> <?php echo $login_err; ?> </span> <br>
+                    </div>
+               </div>
+          </form>
+     </body>
 </html>
