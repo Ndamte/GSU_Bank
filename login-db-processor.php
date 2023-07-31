@@ -2,21 +2,22 @@
 
  session_start();
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$databaseName = "gsu_bank"; 
-
-// Connect to MYSQL Server
-$conn = new mysqli($servername, $username, $password, $databaseName);
-
-// Check the connection
-if ($conn->connect_error) {
-    echo "could not connect to server \n";
-    die("Connection failed: " . $conn->connect_error);
-}else{
-    echo "Connection established!" . "<br>";
-}
+ $servername = "localhost";
+ $username = "root";
+ $password = "";
+ $dbname = "qma5"; // Corrected database name
+ 
+ // Connect to MYSQL Server
+ $conn = new mysqli($servername, $username, $password, $dbname);
+ 
+ // Check the connection
+ if ($conn->connect_error) {
+     echo "could not connect to server \n";
+     die("Connection failed: " . $conn->connect_error);
+ } else {
+     echo "Connection established!" . "<br>";
+ }
+ 
 
 
 // Process the form data
@@ -27,14 +28,19 @@ if ($conn->connect_error) {
 // Get the username from the session
 
 
-// Prepare a query that selects the row with the specified username
-$query = "SELECT * FROM users WHERE username = ?";
+// Prepare the query that selects the row with the specified username and password
+$query = "SELECT * FROM accounts WHERE username = ? AND password = ?";
+
 
 // Prepare the statement
 $stmt = $conn->prepare($query);
 
-// Bind the username to the statement
-$stmt->bind_param("s", $username);
+if (!$stmt) {
+    die("Failed to prepare statement: " . $conn->error);
+}
+
+// Bind the username and password to the statement
+$stmt->bind_param("ss", $username, $password);
 
 // Execute the statement
 $stmt->execute();
@@ -47,14 +53,13 @@ if ($result->num_rows > 0) {
 } else {
     $_SESSION["error"] = "Incorrect username or password";
     header("Location: login.php");
-   exit;
+    exit;
 }
 
 // Close the statement 
 $stmt->close();
 
-
 // Close the database connection
-
 $conn->close();
+
 ?>

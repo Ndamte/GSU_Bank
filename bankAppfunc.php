@@ -1,7 +1,21 @@
 <?php
 // Start the session
 session_start();
+
+$servername = "localhost";
+$username = "root";
+$password = ""; 
+$dbname = "qma5"; 
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} else {
+    echo "Connected successfully";
+}
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,13 +45,9 @@ session_start();
     </div>
 
     <div class="payment common">
-      <p>Make a Payment</p>
+      <p><a href="makePayment.php">Make a Payment</a></p>
     </div>
 
-    <div class="history common">
-      <p>Transaction History</p>
-      <ul id="transactionHistory"></ul>
-    </div>
   </div>
   <div class="lower_body">
   <div class="acctProfile">
@@ -47,49 +57,28 @@ session_start();
        </div>
 
        <?php
-        $sql = "SELECT * FROM accounts WHERE username='".$_SESSION['username']."'";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                echo "<label>account holder: " . $row['account_holder'] . "</label><br>";
-                echo "<label>mailing address: " . $row['mailing_address'] . "</label><br>";
-                echo "<label>phone number: " . $row['phone_number'] . "</label><br>";
-                echo "<label>email address: " . $row['email_address'] . "</label><br>";
-                echo "<label>account number: " . $row['account_number'] . "</label><br>";
-                echo "<label>routing number: " . $row['routing_number'] . "</label><br>";
-            }
-        } else {
-            echo "No account information found";
-        }
+       $sql = "SELECT * FROM accounts WHERE username = ?";
+       $stmt = $conn->prepare($sql);
+       $stmt->bind_param("s", $_SESSION['username']);
+       $stmt->execute();
+       $result = $stmt->get_result();
+       
+       if ($result->num_rows > 0) {
+           while ($row = $result->fetch_assoc()) {
+               echo "Username: " . $row['username'] . "<br>";
+               echo "First Name: " . $row['first_name'] . "<br>";
+               echo "Last Name: " . $row['last_name'] . "<br>";
+               echo "Address: " . $row['address'] . "<br>";
+               echo "Balance: $" . $row['balance'] . "<br>";
+               echo "Email: " . $row['email'] . "<br>";
+               echo "Phone: " . $row['phone'] . "<br>";
+           }
+       } else {
+           echo "No account information found";
+       }
     ?>
 
   </div>
-
-  <div class="recent">  
-    <div class="activity_header"> 
-     Recent Activity
-     </div>
-     <div class="desc_content">
-
-     <?php
-            $sql = "SELECT * FROM activities WHERE username='".$_SESSION['username']."' ORDER BY activity_date DESC";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    echo "<div class='description'><label>description: " . $row['description'] . "</label></div>";
-                    echo "<div class='amount'><label>amount: " . $row['amount'] . "</label></div>";
-                }
-            } else {
-                echo "No recent activity";
-            }
-        ?>
-
-    </div>
-
-  </div> 
-
-  </div>
-
   </div>
 
   <script src="script.js"></script>
