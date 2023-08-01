@@ -10,7 +10,7 @@ body {
   display: flex;
   margin-top: 20px;
   
-  background-color: purple;
+  background-color: black;
   width: 100%;
 }
 
@@ -31,7 +31,7 @@ body {
 }
 
 .common{
-  
+  color: white;
   border-style: solid;
   padding-right: 5px;
   margin-right: 5px;
@@ -42,7 +42,8 @@ body {
   cursor: pointer;
 }
 
-.common p{
+.common a{
+  color: white;
   margin: 0;
   padding-top: 8px;
 }
@@ -84,7 +85,7 @@ body {
 }
 
 .recent{
-  display: flex;
+ 
   flex-direction: column;
   border-style: solid;
   width:46%;
@@ -100,9 +101,13 @@ body {
   padding-left: 8px;
 }
 
-.desc_content{
-  display:flex;
+.spacing{
+  word-spacing: 55px;
 }
+
+
+
+
 
 .description{
   width: 46%;

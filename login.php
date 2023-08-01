@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
      <head>
-          <title>Login - Jeopardy</title>
+          <title>GSU Bank</title>
           <meta charset="UTF-8">
           <link rel="stylesheet" href="login_style.css">
      </head>
